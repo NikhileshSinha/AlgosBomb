@@ -15,12 +15,13 @@ int G[V][V] = {
 int main()
 {
     // Initializing variables
-    int S=0,i,j;
+    int S = 0, i, j;
     int distance[V], vis[V];
 
     // Initializing distance and visited arrays
-    for(i = 0; i < V; i++){
-        if(G[S][i]>0)
+    for (i = 0; i < V; i++)
+    {
+        if (G[S][i] > 0)
             distance[i] = G[S][i];
         else
             distance[i] = 999;
@@ -32,12 +33,15 @@ int main()
     vis[S] = 1;
 
     int count = 0;
-    while(count <V-1){
-        int a, min=999;
-        
+    while (count < V - 1)
+    {
+        int a, min = 999;
+
         // Finding the vertex with the minimum distance from the source vertex
-        for(i = 0; i < V; i++){
-            if(distance[i]<min && vis[i]==0){
+        for (i = 0; i < V; i++)
+        {
+            if (distance[i] < min && vis[i] == 0)
+            {
                 min = distance[i];
                 a = i;
             }
@@ -46,20 +50,20 @@ int main()
         vis[a] = 1;
 
         // Updating the distances of adjacent vertices
-        for (j = 0; j < V; j++){
-            if(G[a][j]>0 && j!=S){
-                if (distance[j] > distance[a] + G[a][j])
-                {
+        for (j = 0; j < V; j++)
+        {
+            if (G[a][j] > 0 && j != S && distance[j] > distance[a] + G[a][j])
+            {
                     distance[j] = distance[a] + G[a][j];
-                }
             }
         }
-        
+
         count++;
     }
 
     // Printing the shortest path from the source vertex to all other vertices
-    for(i=0; i < V; i++){
+    for (i = 0; i < V; i++)
+    {
         printf("%d  %d\n", i, distance[i]);
     }
 
