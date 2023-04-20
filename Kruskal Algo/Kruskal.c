@@ -1,67 +1,53 @@
+
 #include <stdio.h>
-#define V 9
+#define V 6
 
 int G[V][V] = {
-    {0, 4, 0, 0, 0, 0, 0, 8, 0},
-    {4, 0, 8, 0, 0, 0, 0, 11, 0},
-    {0, 8, 0, 7, 0, 4, 0, 0, 2},
-    {0, 0, 7, 0, 9, 14, 0, 0, 0},
-    {0, 0, 0, 9, 0, 10, 0, 0, 0},
-    {0, 0, 4, 14, 10, 0, 2, 0, 0},
-    {0, 0, 0, 0, 0, 2, 0, 1, 6},
-    {8, 11, 0, 0, 0, 0, 1, 0, 7},
-    {0, 0, 2, 0, 0, 0, 6, 7, 0}};
+    {0, 4, 4, 0, 0, 0},
+    {4, 0, 2, 0, 0, 0},
+    {4, 2, 0, 3, 4, 2},
+    {0, 0, 3, 0, 3, 0},
+    {0, 0, 4, 3, 0, 3},
+    {0, 0, 2, 0, 3, 0}};
 
 int main()
 {
-    // Initializing variables
-    int S=0,i,j;
-    int distance[V], vis[V];
-
-    // Initializing distance and visited arrays
-    for(i = 0; i < V; i++){
-        if(G[S][i]>0)
-            distance[i] = G[S][i];
-        else
-            distance[i] = 999;
-        vis[i] = 0;
-    }
-
-    // Setting the source vertex distance to zero and marking it as visited
-    distance[S] = 0;
-    vis[S] = 1;
-
-    int count = 0;
-    while(count <V-1){
-        int a, min=999;
-        
-        // Finding the vertex with the minimum distance from the source vertex
-        for(i = 0; i < V; i++){
-            if(distance[i]<min && vis[i]==0){
-                min = distance[i];
-                a = i;
+    for (int i = 0; i < V; i++)
+    {
+        for (int j = 0; j < V; j++)
+        {
+            if (G[i][j] == 0)
+            {
+                G[i][j] = 999;
             }
         }
+    }
+    int a = 0, b = 0, mincost=0;
+    printf("node1 -> node2 (weight)\n");
+    int visited[V], edgNo = 1;
+    visited[0] = 1;
 
-        vis[a] = 1;
-
-        // Updating the distances of adjacent vertices
-        for (j = 0; j < V; j++){
-            if(G[a][j]>0 && j!=S){
-                if (distance[j] > distance[a] + G[a][j])
+    while (edgNo < V)
+    {
+        int min = 999;
+        for (int i = 0; i < V; i++)
+        {
+            for (int j = 0; j < V; j++)
+            {
+                if( !(visited[i]==1 && visited[j]==1) && G[i][j] < min)
                 {
-                    distance[j] = distance[a] + G[a][j];
+                    min = G[i][j];
+                    a = i;
+                    b = j;
                 }
             }
         }
-        
-        count++;
+        printf("%d   ->   %d     (%d)\n", a, b, G[a][b]);
+        visited[b] = 1;
+        mincost+=min;
+        G[a][b] = G[b][a] = 999;
+        edgNo++;
     }
-
-    // Printing the shortest path from the source vertex to all other vertices
-    for(i=0; i < V; i++){
-        printf("%d  %d\n", i, distance[i]);
-    }
-
+    printf("Minimum cost: %d\n", mincost);
     return 0;
 }
